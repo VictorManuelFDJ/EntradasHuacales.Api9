@@ -124,5 +124,19 @@ namespace EntradasHuacales.api9.Services
             })
                 .ToArrayAsync();
         }
+
+        public async Task<TipoHuacalesDto[]> ListarTodo(Expression<Func<TipoHuacales, bool>> criterio)
+        {
+            await using var contexto = await DbFactory.CreateDbContextAsync();
+            return await contexto.TiposHuacales
+                .Where(criterio)
+                .Select(t => new TipoHuacalesDto
+                {
+                    TipoId = t.TipoId,
+                    Descripcion = t.Descripcion,
+                    Existencia = t.Existencia
+                })
+                .ToArrayAsync();
+        }
     }
 }
